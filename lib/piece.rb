@@ -1,6 +1,6 @@
 class Piece
+  attr_reader :color
   attr_accessor :position
-  attr_reader :color, :symbol
 
   def initialize(position, color)
     @position = position
@@ -8,11 +8,11 @@ class Piece
     @symbol = nil
   end
 
-  def valid_moves(board)
-    raise NotImplementedError, "This method should be implemented by subclasses"
+  def symbol
+    @symbol
   end
 
-  def to_s
-    @symbol
+  def valid_moves(board)
+    []
   end
 end

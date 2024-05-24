@@ -3,7 +3,7 @@ require_relative 'piece'
 class Pawn < Piece
   def initialize(position, color)
     super
-    @symbol = color == :white ? "♙" : "♟"
+    @symbol = color == :white ? "♟" : "♙"
   end
 
   def valid_moves(board)

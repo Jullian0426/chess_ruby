@@ -1,44 +1,40 @@
+# lib/rook.rb
 require_relative 'piece'
 
 class Rook < Piece
   def initialize(position, color)
     super
-    @symbol = color == :white ? "♖" : "♜"
+    @symbol = color == :white ? "♜" : "♖"
   end
 
   def valid_moves(board)
-    row, col = position
+    directions = [[-1, 0], [1, 0], [0, -1], [0, 1]]
     moves = []
 
-    # Vertical moves upwards
-    add_moves_in_direction(board, moves, row, col, -1, 0)
-    # Vertical moves downwards
-    add_moves_in_direction(board, moves, row, col, 1, 0)
-    # Horizontal moves to the left
-    add_moves_in_direction(board, moves, row, col, 0, -1)
-    # Horizontal moves to the right
-    add_moves_in_direction(board, moves, row, col, 0, 1)
+    directions.each do |dir|
+      add_moves_in_direction(board, moves, dir)
+    end
 
     moves
   end
 
   private
 
-  def add_moves_in_direction(board, moves, start_row, start_col, row_dir, col_dir)
-    row, col = start_row + row_dir, start_col + col_dir
+  def add_moves_in_direction(board, moves, direction)
+    row, col = position
+    loop do
+      row += direction[0]
+      col += direction[1]
+      break unless row.between?(0, 7) && col.between?(0, 7)
 
-    while row.between?(0, 7) && col.between?(0, 7)
-      piece = board.get_piece([row, col])
+      next_pos = [row, col]
+      piece = board.get_piece(next_pos)
       if piece.nil?
-        moves << [row, col]
-      elsif piece.color != color
-        moves << [row, col]
-        break
+        moves << next_pos
       else
+        moves << next_pos if piece.color != color
         break
       end
-      row += row_dir
-      col += col_dir
     end
   end
 end
